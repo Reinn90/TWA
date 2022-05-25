@@ -48,7 +48,7 @@ require_once("nocache.php");
 
                 $rs = $dbConn->query($sql);
                 
-
+                // I have added a feature
                 // Validate login details against database
                 if($rs->num_rows) {
 
