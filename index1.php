@@ -18,7 +18,6 @@ require_once("nocache.php");
         // Initialise error messages
         $loginError = "";
         $error = "";
-        $accessdenied = "";
         
 
         // check if the form has been submitted
@@ -55,6 +54,7 @@ require_once("nocache.php");
 
                     // Start a new session for the user
                     session_start();
+                    $accessdenied = "";
 
                     // Store the user details in session variables
                     $user = $rs->fetch_assoc();
