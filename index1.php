@@ -60,9 +60,10 @@ session_start();
                 $sql .= "WHERE employee_id = '$userId' ";
                 $sql .= "AND password = '$hashedPassword'";
 
-                $rs = $dbConn->query($sql);
+                $rs = $dbConn->query($sql)
+                    or die ('Problem with query' . $dbConn->error);
                 
-                // I have added a feature
+                
                 // Validate login details against database
                 if($rs->num_rows) {
 
