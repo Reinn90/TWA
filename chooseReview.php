@@ -7,15 +7,23 @@
 
    // check if the user is logged in
    if (!$_SESSION["who"]){
+
+     // Create a session variable to identifies whether a user is NOT logged in
+
+     $_SESSION["error"] = "Error. Accessed restricted page. Please log in.";
+
      header("location: logoff.php");
 
-    //  change te $accessdenied variable
+    
     
    }
 
    // retrieve session variables
    $userName = $_SESSION['who'];
    $userLevel = $_SESSION['level'];
+
+   // get Server date
+   $serverDate = date("Y-m-d");
 ?>
 
 <!DOCTYPE html>
@@ -31,12 +39,17 @@
     
     <div class="container">
         <div><h2>DUNDER MIFFLIN <small>inc.</small></h2></div>
+        <!-- Navigation bar -->
         <div class="navigation">
             <ul>
-                <li><?php echo "Hi $userName";?></li>
+                <li><?php echo "Hi $userName ($userLevel DELETE ME LATER)";?></li>
                 <li><a href="logoff.php">Log Off</a></li>   
+                <li><?php echo $serverDate; ?></li>
             </ul>
         </div>
+        
+        <!-- Personal performance review -->
+       <h3>Your performance reviews</h3> 
 
         <div id="main-container">
             <div class="review-containers">
@@ -48,6 +61,7 @@
             </div>
         </div>
         
+        <!-- Supervisor performance reviews to create -->
             
         
     </div>
