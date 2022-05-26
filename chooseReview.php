@@ -6,24 +6,36 @@
    session_start();
 
    // check if the user is logged in
-   if (!$_SESSION["who"]){
+   if (!isset($_SESSION["who"])){
 
-     // Create a session variable to identifies whether a user is NOT logged in
+     // Create a session variable that identifies that the user is NOT logged in
 
      $_SESSION["error"] = "Error. Accessed restricted page. Please log in.";
 
      header("location: logoff.php");
-
-    
-    
    }
 
    // retrieve session variables
-   $userName = $_SESSION['who'];
-   $userLevel = $_SESSION['level'];
+   $userName = $_SESSION['who'];     //name of the employee
+   $userLevel = $_SESSION['level'];  // Employee id
 
    // get Server date
-   $serverDate = date("Y-m-d");
+   $serverDate = date("d-m-Y");
+
+   // Connect to the database to retrieve performance reviews
+   require_once("conn.php");
+
+   // Build SQL query
+   $sql = "SELECT review_id, review_year, date_completed, completed ";
+   $sql .= "FROM review "; 
+   $sql .= "WHERE employee_id = '$userLevel' ";
+
+   //Query the database
+   $rs = $dbConn->query($sql)
+        or die ('Problem with query' . $dbConn->error);
+
+
+   
 ?>
 
 <!DOCTYPE html>
@@ -42,22 +54,50 @@
         <!-- Navigation bar -->
         <div class="navigation">
             <ul>
-                <li><?php echo "Hi $userName ($userLevel DELETE ME LATER)";?></li>
-                <li><a href="logoff.php">Log Off</a></li>   
-                <li><?php echo $serverDate; ?></li>
+                <li><?php echo "Hi $userName ($userLevel)";?><a href="logoff.php">Log Off</a></li>
+                <li>Server date: <?php echo $serverDate; ?></li>
             </ul>
         </div>
         
         <!-- Personal performance review -->
-       <h3 class="container-header">Your performance reviews</h3> 
+       <div class="container-header"><h3>Your performance reviews</h3></div> 
 
         <div id="main-container">
             <div class="review-containers">
-                <h3>Current Reviews</h3>
+
+                <!-- Display current reviews in descending order in a list -->
+                <h3>Current</h3>
+                <ul>
+                <?php
+                
+                    // Display a different message when there's no record found
+                    if ($rs->num_rows):
+
+                        while($row = $rs->fetch_assoc()): ?>
+                        <li>
+                            <?php  
+                            //  show only completed records 
+                                if($row["completed"] == "Y"):
+                                echo "Year Review: " .$row["review_year"]. "<br> Date completed: ". $row["date_completed"] ."<br>";?>
+                            <a href="viewReview.php?review_id=<?php echo $row["review_id"]; ?>">Process</a>
+                            <?php endif;?>
+                        <?php endwhile;?>
+                        </li>
+                            
+                    <?php 
+                    else:
+                        echo "<li>You have no current performance reviews to check.</li>";
+                    endif;
+                
+                ?>
+                </ul>
+
+
+                 
             </div>
             
             <div class="review-containers">
-                <h3>Completed Reviews</h3>
+                <h3>Completed</h3>
             </div>
         </div>
         
@@ -65,7 +105,8 @@
             
         
     </div>
-    
+<?php // Close the connection to the database
+    $dbConn->close();?>
     
 </body>
 </html>
