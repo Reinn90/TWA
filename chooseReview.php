@@ -49,7 +49,7 @@
         </div>
         
         <!-- Personal performance review -->
-       <h3>Your performance reviews</h3> 
+       <h3 class="container-header">Your performance reviews</h3> 
 
         <div id="main-container">
             <div class="review-containers">
