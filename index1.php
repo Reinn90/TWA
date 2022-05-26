@@ -1,6 +1,9 @@
 <?php 
 // Ensure the page is not cached
 require_once("nocache.php");
+
+// Start a new session for the user
+session_start();
 ?>
 
 <!DOCTYPE html>
@@ -18,6 +21,17 @@ require_once("nocache.php");
         // Initialise error messages
         $loginError = "";
         $error = "";
+        $accessdenied = "";
+
+        //Access session variable from restricted pages for the error message.
+        if (isset($_SESSION["error"])){
+            $accessdenied = $_SESSION["error"];
+        
+            // destroy the session variable as user in now in the log-in page.
+            session_destroy();
+        }
+
+    
         
 
         // check if the form has been submitted
@@ -52,15 +66,12 @@ require_once("nocache.php");
                 // Validate login details against database
                 if($rs->num_rows) {
 
-                    // Start a new session for the user
-                    session_start();
-                    $accessdenied = "";
-
+                    
                     // Store the user details in session variables
                     $user = $rs->fetch_assoc();
 
-                    $_SESSION['level'] = $user['employee_id'];
-                    $_SESSION['who'] = $user['firstname'];
+                    $_SESSION['level'] = $user['employee_id']; // employee level
+                    $_SESSION['who'] = $user['firstname']; // employee name
                     
                     // Close the connection to the database
                     $dbConn->close();
