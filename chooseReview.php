@@ -84,27 +84,30 @@ $rs = $dbConn->query($sql)
 
                             <!-- Current performance reviews -->
 
-                            <?php if ($row["completed"] == "N") : ?>
-                                <td>
+                            <td>
+                                <?php if ($row["completed"] == "N") : ?>
+
                                     <?php echo "Year Review: " . $row["review_year"] . "<br>"; ?>
                                     <a href="viewReview.php?review_id=<?php echo $row["review_id"]; ?>">Process</a>
-                                
-                                </td>
-                            <?php endif; ?>
 
+                                <?php elseif (($row["completed"] != "Y") && ($row["completed"] != "N")) :
+                                    echo "Error message."; ?>
+                                <?php endif; ?>
+                            </td>
 
 
                             <!-- Completed performance reviews -->
 
-                            <?php if ($row["completed"] == "Y") : ?>
-                                <td>
+                            <td>
+                                <?php if ($row["completed"] == "Y") : ?>
+
                                     <?php echo "Year Review: " . $row["review_year"] . "<br> Date completed: " . $row["date_completed"] . "<br>"; ?>
                                     <a href="viewReview.php?review_id=<?php echo $row["review_id"]; ?>">Process</a>
 
-
-                                </td>
-                            <?php endif; ?>
-
+                                <?php elseif (($row["completed"] != "Y") && ($row["completed"] != "N")) :
+                                    echo "Error message."; ?>
+                                <?php endif; ?>
+                            </td>
 
                         <?php endwhile; ?>
                     </tr>
