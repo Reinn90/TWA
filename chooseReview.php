@@ -75,42 +75,44 @@ $rs = $dbConn->query($sql)
 
                 <table>
                     <tr>
-                        <th>Current</th>
+                        <th>Outstanding</th>
                         <th>Completed</th>
                     </tr>
 
-                    <tr>
-                        <?php while ($row = $rs->fetch_assoc()) : ?>
+                    <!-- changing while loop to foreach, to fix duplicate looping issue
+                 sourced from https://stackoverflow.com/questions/63790018/how-to-user-fetch-assoc-twice-in-a-single-php-file/63791411#63791411-->
+                    <?php while ($row = $rs->fetch_assoc()) : ?>
+                        <tr>
 
                             <!-- Current performance reviews -->
 
-                            <td>
-                                <?php if ($row["completed"] == "N") : ?>
-
+                            <?php if ($row["completed"] == "N") : ?>
+                                <td>
                                     <?php echo "Year Review: " . $row["review_year"] . "<br>"; ?>
                                     <a href="viewReview.php?review_id=<?php echo $row["review_id"]; ?>">Process</a>
-
-                                <?php elseif (($row["completed"] != "Y") && ($row["completed"] != "N")) :
-                                    echo "Error message."; ?>
-                                <?php endif; ?>
-                            </td>
+                                </td>
+                            <?php elseif (($row["completed"] == "Y") && ($row["completed"] != "N") ) :
+                                echo "<td>You have no outstanding reviews to process.</td>"; 
+                            else :
+                                echo ""; ?>
+                            <?php endif; ?>
 
 
                             <!-- Completed performance reviews -->
 
-                            <td>
-                                <?php if ($row["completed"] == "Y") : ?>
-
+                            <?php if ($row["completed"] == "Y") : ?>
+                                <td>
                                     <?php echo "Year Review: " . $row["review_year"] . "<br> Date completed: " . $row["date_completed"] . "<br>"; ?>
-                                    <a href="viewReview.php?review_id=<?php echo $row["review_id"]; ?>">Process</a>
+                                    <a href="viewReview.php?review_id=<?php echo $row["review_id"]; ?>">View</a>
+                                </td>
+                            <?php elseif (($row["completed"] == "N") || ($row["completed"] != "Y") ) :
+                                echo "<td>You have no completed reviews to view.</td>"; 
+                            else :
+                                echo ""; ?>
+                            <?php endif; ?>
 
-                                <?php elseif (($row["completed"] != "Y") && ($row["completed"] != "N")) :
-                                    echo "Error message."; ?>
-                                <?php endif; ?>
-                            </td>
-
+                        </tr>
                         <?php endwhile; ?>
-                    </tr>
 
                 </table>
 
