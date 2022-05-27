@@ -112,9 +112,19 @@ body {
     margin: 10px;
 }
 
-.container-header{
-    margin: 0px;
-    font-size: 16px;
+.container-header {
+    margin:0px;
+    padding:15px;
+    display: flex;
+    justify-content: center;
+}
+
+.container-header h3{
+    margin:0px;
+    font-size:1.5em;
+    display:inherit;
+    justify-content: inherit;
+    width: 500px;
 }
 
 .review-containers{
@@ -122,11 +132,35 @@ body {
 }
 
 #main-container{
-    border-top: 2px solid #f0f0f0;
+    border-top: 2px solid #676060;
     display: flex;
+    width:100%;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: center;
 }
 
+/* DELETE before submission*/
+table{
+    margin:10px;    
+    border-spacing:100px 0;
+}
+
+
+th {
+    width: 400px;
+    padding: 15px;
+    font-size:20px;
+    background-color: #2a3c5f;
+    color:white;
+    text-align: center;
+    vertical-align: center;
+    
+}
+
+td {
+    width:300px;
+    text-align:justify;
+    
+}
 
 
