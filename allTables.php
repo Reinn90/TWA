@@ -23,7 +23,7 @@ while($tableName = $tables->fetch_array()) {
 <head>
 	<meta charset="utf-8">
 	<title>Database Tables</title>
-  <link rel="stylesheet" href="css/projectMaster.css">
+  <link rel="stylesheet" href="../css/projectMaster.css">
 </head>
 <body>
 <!-- The ':' in php gives an alternative way for introducing control structures.
