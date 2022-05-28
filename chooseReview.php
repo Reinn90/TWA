@@ -56,6 +56,7 @@ $rs = $dbConn->query($sql)
             <h2>DUNDER MIFFLIN <small>inc.</small></h2>
         </div>
         <!-- Navigation bar -->
+        <!-- Display current user and server date -->
         <div class="navigation">
             <ul>
                 <li><?php echo "Hi $userName ($userLevel)"; ?><a href="logoff.php">Log Off</a></li>
@@ -70,50 +71,52 @@ $rs = $dbConn->query($sql)
 
         <div id="main-container">
 
+        <!-- If there are no records of review, display an alternate message rather than a table -->
             <?php
             if ($rs->num_rows) : ?>
 
+                <!-- changing while loop to foreach, sourced from https://stackoverflow.com/questions/63790018/how-to-user-fetch-assoc-twice-in-a-single-php-file/63791411#63791411-->
+                
                 <table>
-                    <tr>
-                        <th>Outstanding</th>
-                        <th>Completed</th>
-                    </tr>
+                    <tr><thead><th>Outstanding</th></thead></tr>
 
-                    <!-- changing while loop to foreach, to fix duplicate looping issue
-                 sourced from https://stackoverflow.com/questions/63790018/how-to-user-fetch-assoc-twice-in-a-single-php-file/63791411#63791411-->
-                    <?php while ($row = $rs->fetch_assoc()) : ?>
+                    <!-- For Current (non-complete reviews), only display data if it exist -->
+                    <?php foreach ($rs as $row) :
+                        $recordCounter = 0; ?>
                         <tr>
+                            <?php if ($row["completed"] == "N") :
+                                $recordCounter++;  ?>
 
-                            <!-- Current performance reviews -->
-
-                            <?php if ($row["completed"] == "N") : ?>
                                 <td>
                                     <?php echo "Year Review: " . $row["review_year"] . "<br>"; ?>
                                     <a href="viewReview.php?review_id=<?php echo $row["review_id"]; ?>">Process</a>
                                 </td>
-                            <?php elseif (($row["completed"] == "Y") && ($row["completed"] != "N") ) :
-                                echo "<td>You have no outstanding reviews to process.</td>"; 
-                            else :
-                                echo ""; ?>
                             <?php endif; ?>
+                        </tr>
 
+                    <?php endforeach; ?>
+                    <!-- Otherwise, display an alternate message -->
+                    <?php if ($recordCounter == 0) echo "<td>You have no outstanding review to process.</td>";  ?>
+                </table>
 
-                            <!-- Completed performance reviews -->
+                <table><tr><thead><th>Completed</th></thead></tr>
 
+                    <!-- On the contrary, "Completed" reviews will always come after being in the "Current"
+                    table, so the only case where there will be no records, is for DM001 (Michael), and the
+                    alternate message will be already captured by the main $rs->num_rows condition -->
+                    
+                    <?php foreach ($rs as $row) : ?>
+                        <tr>
                             <?php if ($row["completed"] == "Y") : ?>
+
                                 <td>
                                     <?php echo "Year Review: " . $row["review_year"] . "<br> Date completed: " . $row["date_completed"] . "<br>"; ?>
                                     <a href="viewReview.php?review_id=<?php echo $row["review_id"]; ?>">View</a>
                                 </td>
-                            <?php elseif (($row["completed"] == "N") || ($row["completed"] != "Y") ) :
-                                echo "<td>You have no completed reviews to view.</td>"; 
-                            else :
-                                echo ""; ?>
+
                             <?php endif; ?>
-
                         </tr>
-                        <?php endwhile; ?>
-
+                    <?php endforeach; ?>
                 </table>
 
             <?php else :
@@ -121,8 +124,13 @@ $rs = $dbConn->query($sql)
             endif; ?>
         </div>
 
+        <!-- If the logged in user is a supervisor, show the below section -->
         <!-- Supervisor performance reviews to create -->
-
+        <?php if (($userLevel == "DM001") || ($userLevel == "DM002") || ($userLevel == "DMCEO")): ?>
+        <div class="container-header">
+            <h3>Staff performance review</h3>
+        </div>
+        <?php endif; ?>
 
     </div>
     <?php // Close the connection to the database

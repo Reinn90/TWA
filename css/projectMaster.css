@@ -139,14 +139,14 @@ body {
     justify-content: center;
 }
 
-/* DELETE before submission*/
-table{
-    margin:10px;    
-    border-spacing:100px 0;
+table{    
+    margin:10px;
+    border-spacing:10px 5px;
+    text-align: center;
 }
 
 
-th {
+th,thead {
     width: 400px;
     padding: 15px;
     font-size:20px;
@@ -157,10 +157,5 @@ th {
     
 }
 
-td {
-    width:300px;
-    text-align:justify;
-    
-}
 
 
