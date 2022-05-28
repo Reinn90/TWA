@@ -1,5 +1,7 @@
+<!--Nowell Reyes - 20658133 - Thursday 9am Online Tutorial  -->
+
 <?php 
-// Ensure the page is not cached
+// Ensure the page is not cached - sourced from TWA lecture slides by Paul Davies
 require_once("nocache.php");
 
 // Start a new session for the user

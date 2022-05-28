@@ -1,5 +1,7 @@
+<!--Nowell Reyes - 20658133 - Thursday 9am Online Tutorial  -->
+<!--sourced from TWA lecture slides by Paul Davies -->
 <?php
-   // ensure the page is not cached
+   // ensure the page is not cached - sourced from TWA lecture slides by Paul Davies
    require_once("nocache.php");
 
    // get access to the session variables

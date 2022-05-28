@@ -1,3 +1,4 @@
+/* Nowell Reyes - 20658133 - Thursday 9am Online Tutorial  */
 
 * {
     box-sizing: border-box;
@@ -6,7 +7,7 @@
 
 /*Color scheme styling - sourced from https://www.schemecolor.com/reach-to-the-office.php */
 body {
-    background-color: #727980; 
+    background-color: #727980;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -15,10 +16,25 @@ body {
 
 }
 
+a {
+    text-decoration: none;
+    color:#2a3c5f;
+    border:1px solid #2a3c5f;
+    border-radius:4px;
+    padding:5px;
+    font-weight: bold;
+    margin:10px;
+}
+
+a:hover{
+    background-color: #2a3c5f;
+    color: #EDEFE2;
+}
+
 .form-container {
-    background-color: #EDEFE2; 
+    background-color: #EDEFE2;
     border-radius: 5px;
-    box-shadow:0 2px 5px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
     width: 500px;
     max-width: 100%;
     overflow: hidden;
@@ -28,12 +44,12 @@ body {
 .form-container h2 {
     font-family: "Impact", "Helvetica", sans-serif;
     background-color: #2a3c5f;
-    color:#edefe2;
+    color: #edefe2;
     font-size: 3em;
     letter-spacing: 0.03em;
     padding: 10px 20px;
     border-bottom: 1px solid #f0f0f0;
-    margin:0px
+    margin: 0px
 }
 
 .form {
@@ -41,12 +57,12 @@ body {
 }
 
 .form-control {
-    
+
     padding-bottom: 20px;
     position: relative;
 }
 
-.form-control label{
+.form-control label {
     display: inline-block;
     margin-bottom: 5px;
     width: 100px;
@@ -56,23 +72,23 @@ body {
     border: 2px solid #2a3c5f;
     border-radius: 4px;
     display: inline-block;
-    width: 300px;   
+    width: 300px;
 }
 
-#submit-button{
-    color:white;
-    background-color:#2a3c5f;
+#submit-button {
+    color: white;
+    background-color: #2a3c5f;
     width: 100%;
-    padding:5px;
-    
+    padding: 5px;
+
     border-radius: 4px;
     font-size: 16px;
     cursor: pointer;
 }
 
-#submit-button:hover{
+#submit-button:hover {
     color: #2a3c5f;
-    background-color:#edefe2;
+    background-color: #edefe2;
 }
 
 .error {
@@ -80,28 +96,28 @@ body {
 }
 
 .container {
-    background-color: #EDEFE2; 
+    background-color: #EDEFE2;
     border-radius: 5px;
-    box-shadow:0 2px 5px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3);
     width: 1000px;
-    overflow:hidden;
+    overflow: hidden;
 }
 
 .container h2 {
     font-family: "Impact", "Helvetica", sans-serif;
     background-color: #2a3c5f;
-    color:#edefe2;
+    color: #edefe2;
     font-size: 2em;
     letter-spacing: 0.07em;
     padding: 10px 20px;
     border-bottom: 1px solid #f0f0f0;
-    margin:0px
+    margin: 0px
 }
 
 .navigation ul {
     list-style-type: none;
     display: flex;
-    flex-wrap:wrap;
+    flex-wrap: wrap;
     justify-content: space-between;
     padding: 0px;
     margin: 0px;
@@ -113,43 +129,44 @@ body {
 }
 
 .container-header {
-    margin:0px;
-    padding:15px;
+    margin: 0px;
+    padding: 15px;
     display: flex;
     justify-content: center;
 }
 
-.container-header h3{
-    margin:0px;
-    font-size:1.5em;
-    display:inherit;
+.container-header h3 {
+    margin: 0px;
+    font-size: 1.5em;
+    display: inherit;
     justify-content: inherit;
     width: 500px;
 }
 
-.review-containers{
-    font-size:16px;
+.review-containers {
+    font-size: 16px;
 }
 
-#staff-table-container, #supervisor-table-container{
+#staff-table-container,
+#supervisor-table-container {
     border-top: 2px solid #676060;
     display: flex;
-    width:100%;
+    width: 100%;
     flex-wrap: wrap;
     justify-content: center;
     text-align: center;
-    
+
 }
 
 
-#staff-table-container table{    
-    margin:10px;
-    border-spacing:10px 5px;
-    
+#staff-table-container table {
+    margin: 10px;
+    border-spacing: 10px 5px;
+
 }
 
-#supervisor-table-container table{
-width:100%;
+#supervisor-table-container table {
+    width: 100%;
 }
 
 
@@ -158,29 +175,56 @@ tr:nth-child(even) {
 }
 
 
-.employee-header, h4 {
+.employee-header,
+h4 {
     width: 400px;
     padding: 15px;
-    font-size:20px;
+    font-size: 20px;
     background-color: #2a3c5f;
-    color:white;
+    color: white;
     text-align: center;
 }
 
 
-td{
-    padding:10px;
+td {
+    padding: 10px;
     margin-bottom: 5px;
-    
+
 }
-
-
 
 h4 {
-    width:100%;
-    padding:15px;
-    margin:10px 0;
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
 }
 
+#review-detail {
+    display: grid;
 
+    grid-template: "emp comments comments"
+                   "eval comments comments"
+                   "eval comments comments";
 
+    grid-gap:10px;
+
+    margin:10px;
+    justify-content: center;
+}
+
+#employee-section{
+    grid-area: emp;
+    height:auto;
+    width:550px;
+}
+
+#employee-rating {
+    grid-area: eval;
+    height:auto;
+    width:550px;
+}
+
+#additional-comments{
+    grid-area: comments;
+    height:auto;
+    width:400px;
+}
