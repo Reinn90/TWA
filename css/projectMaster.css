@@ -18,15 +18,15 @@ body {
 
 a {
     text-decoration: none;
-    color:#2a3c5f;
-    border:1px solid #2a3c5f;
-    border-radius:4px;
-    padding:5px;
+    color: #2a3c5f;
+    border: 1px solid #2a3c5f;
+    border-radius: 4px;
+    padding: 5px;
     font-weight: bold;
-    margin:10px;
+    margin: 10px;
 }
 
-a:hover{
+a:hover {
     background-color: #2a3c5f;
     color: #EDEFE2;
 }
@@ -202,29 +202,61 @@ h4 {
     display: grid;
 
     grid-template: "emp comments comments"
-                   "eval comments comments"
-                   "eval comments comments";
+        "eval comments comments"
+        "eval comments comments";
 
-    grid-gap:10px;
+    grid-gap: 10px;
 
-    margin:10px;
+    margin: 10px;
     justify-content: center;
 }
 
-#employee-section{
+#employee-section {
     grid-area: emp;
-    height:auto;
-    width:550px;
+    height: auto;
+    width: 550px;
+
 }
 
 #employee-rating {
     grid-area: eval;
-    height:auto;
-    width:550px;
+    height: auto;
+    width: 550px;
+
 }
 
-#additional-comments{
+#employee-section table {
+    justify-content: space-evenly;
+    width: 100%;
+    text-align: center;
+}
+
+#employee-rating table {
+    justify-content: space-evenly;
+    width: 100%;
+    text-align: center;
+}
+
+
+#additional-comments {
     grid-area: comments;
-    height:auto;
-    width:400px;
+    height: auto;
+    width: 400px;
+}
+
+#comments-box {
+    height: 68%;
+}
+
+#acknowledgement {
+    display: block;
+    width: 90%;
+    margin: auto;
+    padding: 10px;
+}
+
+#acknowledgement h3 {
+    margin:auto;
+    width:90%;
+    text-align: center;
 }

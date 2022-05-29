@@ -63,7 +63,7 @@ foreach ($rs1 as $row) {
         //close the database before the redirect
         $dbConn->close();
 
-       header("location: logoff.php");
+        header("location: logoff.php");
     }
 }
 
@@ -157,13 +157,27 @@ foreach ($rs1 as $row) {
 
             <div id="additional-comments">
                 <h4>Comments</h4>
-                <table>
-                    <tr>Review completed: <?php echo $row["date_completed"]; ?></tr>
+                <table id="comments-box">
+                    <tr>
+                        <th>Review completed: <?php echo $row["date_completed"]; ?></th>
+                    </tr>
                     <tr>
                         <td>Additional Comments: <br><br> <?php echo $row["additional_comment"]; ?></td>
                     </tr>
                 </table>
             </div>
+        </div>
+
+        <div id="acknowledgement">
+            <h3>Acknowledgement</h3>
+            <form>
+                <p>Thank you for taking part in your Dunder Mifflin Performance Review. This review is an important
+                    aspect of the development of our organisation and its profits and of you as a valued employee.</p>
+                <p><strong>By electronically signing this form, you confirm that you have discussed this review in detail
+                        with your supervisor.</strong>
+                    <small>The fine print: Signing this form does not necessarily indicate that you agree with this evaluation.</small>
+                </p>
+            </form>
         </div>
 
 
