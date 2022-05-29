@@ -7,7 +7,7 @@ require_once("nocache.php");
 // get access to the session variables
 session_start();
 
-// check if the user is logged in
+// check if the user is logged in 
 if (!isset($_SESSION["who"])) {
 
     // Create a session variable that identifies that the user is NOT logged in
@@ -21,6 +21,7 @@ if (!isset($_SESSION["who"])) {
 $userName = $_SESSION['who'];     //name of the employee
 $userLevel = $_SESSION['level'];  // Employee id
 
+
 // get Server date
 $serverDate = date("d-m-Y");
 
@@ -31,8 +32,8 @@ require_once("conn.php");
 $review = $dbConn->escape_string($_GET["review_id"]);
 
 // Build the SQL query
-// Employee information section
-$sql1 = "SELECT review.employee_id, surname, firstname, review_year, ";
+// Employee information section - also retrive supervisor id to match with the logged in supervisor
+$sql1 = "SELECT review.employee_id, surname, firstname, review_year, supervisor_id, ";
 
 // Ratings information section
 $sql1 .= "job_knowledge, work_quality, initiative, communication, dependability, ";
@@ -41,7 +42,7 @@ $sql1 .= "job_knowledge, work_quality, initiative, communication, dependability,
 $sql1 .= "additional_comment, date_completed, accepted ";
 
 // Inner join employee and review tables
-$sql1 .= "FROM review INNER JOIN employee ON employee.employee_id = review.employee_id ";
+$sql1 .= "FROM review INNER JOIN employee ON review.employee_id = employee.employee_id ";
 
 // Data to match the hyperlink
 $sql1 .= "WHERE review_id = '$review' ";
@@ -49,6 +50,23 @@ $sql1 .= "WHERE review_id = '$review' ";
 // Query the database
 $rs1 = $dbConn->query($sql1)
     or die('Problem with query' . $dbConn->error);
+
+// If the logged in user is not the owner of the review, or not the supervisor of the employee review,
+// redirect to logoff page
+foreach ($rs1 as $row) {
+
+    if (($userLevel != $row["supervisor_id"]) && ($userLevel != $row["employee_id"])) {
+
+        // Create a session variable for the index.php error message
+        $_SESSION["error"] = "Error. User did not match review owner. Please log in.";
+
+        //close the database before the redirect
+        $dbConn->close();
+
+       header("location: logoff.php");
+    }
+}
+
 
 ?>
 
@@ -86,7 +104,7 @@ $rs1 = $dbConn->query($sql1)
 
         <!-- Performance review title -->
         <div class="container-header">
-            <h3>Reviews Details</h3>
+            <h3>Review Details</h3>
         </div>
 
         <div id="review-detail">
@@ -140,8 +158,10 @@ $rs1 = $dbConn->query($sql1)
             <div id="additional-comments">
                 <h4>Comments</h4>
                 <table>
-                    <tr>Review completed: <?php echo $row["date_completed"];?></tr>
-                    <tr><td>Comments: <?php echo $row["additional_comment"];?></td></tr>
+                    <tr>Review completed: <?php echo $row["date_completed"]; ?></tr>
+                    <tr>
+                        <td>Additional Comments: <br><br> <?php echo $row["additional_comment"]; ?></td>
+                    </tr>
                 </table>
             </div>
         </div>
