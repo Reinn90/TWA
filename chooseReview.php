@@ -147,13 +147,19 @@ $rs2 = $dbConn->query($sql2)
         <!-- If the logged in user is a supervisor, show the below section -->
         <!-- Supervisor performance reviews access -->
         <?php if (($userLevel == "DM001") || ($userLevel == "DM002") || ($userLevel == "DMCEO")) : ?>
-            <!-- Check for an empty record set -->
+            
 
             <div class="container-header">
                 <h3>Staff performance review</h3>
             </div>
 
+            <!-- Create a new review -->
+            <div id="newReview">
+                <a href="createReview.php">Create a new review</a>
+            </div>
+
             <div id="supervisor-table-container">
+                <!-- Check for an empty record set -->
                 <?php if ($rs2->num_rows) : ?>
 
                     <!-- Display Outstanding reviews in a table -->
