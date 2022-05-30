@@ -88,16 +88,24 @@ if (!$rs->num_rows) {
             </ul>
         </div>
 
-        <div class="form-container">
+            <!-- Initial page form - selecting staff and date -->
+        <div class="review-form-container">
             <form id="newReviewId" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-
+                <label for "stafflist">Choose staff: </label>
                 <select name="stafflist" id="stafflist" size="1" required>
                     <option value="">Please select a staff.</option>
+
+                    <!-- fill select box with supervisor's direct reports -->
                     <?php foreach ($rs as $row) : ?>
                         <option value="<?php echo $row["employee_id"]; ?>"><?php echo $row["surname"] . ", " . $row["firstname"]; ?></option>
                     <?php endforeach; ?>
                 </select>
-
+                <span class="error" id="staff-error-msg">error goes here - delete me</span>
+                
+                <label for="reviewDateCreation">Enter year of review: </label>
+                <input type="text" maxlength="4" size="4" name="reviewDateCreation" id="reviewDateCreation" placeholder="yyyy">
+                <span class="error" id="date-error-msg">error goes here - delete me</span>
+                
                 <input type="submit" name="submit" value="Save review">
             </form>
 
