@@ -29,34 +29,28 @@ $serverDate = date("Y-m-d");
 // Connect to the database to retrieve staff information and review elements
 require_once("conn.php");
 
-
 // Supervisor performance review database query
 // Retrieve Employee’s Surname, Employee’s Firstname, year of review, review id, employee id, completed status, date completed and accepted status
-$sql = "SELECT surname, firstname, review_year, review_id, employee.employee_id, completed, date_completed, supervisor_id, accepted ";
-$sql .= "FROM review INNER JOIN employee ";
-$sql .= "ON review.employee_id = employee.employee_id ";
-$sql .= "WHERE employee.supervisor_id = 'DM001' ";
-$sql .= "ORDER BY review_year DESC ";
+$sql = "SELECT employee_id, surname, firstname, supervisor_id ";
+$sql .= "FROM employee ";
+$sql .= "WHERE supervisor_id = '$userLevel' ";
+$sql .= "ORDER BY surname ";
 
 //Query the database
 $rs = $dbConn->query($sql)
     or die('Problem with query' . $dbConn->error);
 
+// check recordset, if no record found, it means a non-supervisor has tried to access the page
+// redirect to logoff
 
+if (!$rs->num_rows) {
+    // Create a session variable for the index.php error message
+    $_SESSION["error"] = "Error. Supervisor access only.";
 
-// If the logged in user is not a supervisor, redirect to login page
-foreach ($rs as $row) {
+    //close the database before the redirect
+    $dbConn->close();
 
-    if ($row["supervisor_id"] != $userLevel) {
-        
-        // Create a session variable for the index.php error message
-        $_SESSION["error"] = "Error. Supervisor access only.";
-
-        //close the database before the redirect
-        $dbConn->close();
-
-        header("location: logoff.php");
-    }
+    header("location: logoff.php");
 }
 
 ?>
@@ -73,7 +67,7 @@ foreach ($rs as $row) {
 </head>
 
 <body>
-  
+
 
     <div class="container">
 
@@ -96,9 +90,12 @@ foreach ($rs as $row) {
 
         <div class="form-container">
             <form id="newReviewId" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+
                 <select name="stafflist" id="stafflist" size="1" required>
                     <option value="">Please select a staff.</option>
-
+                    <?php foreach ($rs as $row) : ?>
+                        <option value="<?php echo $row["employee_id"]; ?>"><?php echo $row["surname"] . ", " . $row["firstname"]; ?></option>
+                    <?php endforeach; ?>
                 </select>
 
                 <input type="submit" name="submit" value="Save review">
