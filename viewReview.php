@@ -38,27 +38,27 @@ $review = $dbConn->escape_string($_GET["review_id"]);
 
 // Build the SQL query
 // Employee information section - also retrive supervisor id to match with the logged in supervisor
-$sql1 = "SELECT review.employee_id, surname, firstname, review_year, supervisor_id, completed, ";
+$sql = "SELECT review.employee_id, surname, firstname, review_year, supervisor_id, completed, ";
 
 // Ratings information section
-$sql1 .= "job_knowledge, work_quality, initiative, communication, dependability, ";
+$sql .= "job_knowledge, work_quality, initiative, communication, dependability, ";
 
 // Evaluation section
-$sql1 .= "additional_comment, date_completed, accepted ";
+$sql .= "additional_comment, date_completed, accepted ";
 
 // Inner join employee and review tables
-$sql1 .= "FROM review INNER JOIN employee ON review.employee_id = employee.employee_id ";
+$sql .= "FROM review INNER JOIN employee ON review.employee_id = employee.employee_id ";
 
 // Data to match the hyperlink
-$sql1 .= "WHERE review_id = '$review' ";
+$sql .= "WHERE review_id = '$review' ";
 
 // Query the database
-$rs1 = $dbConn->query($sql1)
+$rs = $dbConn->query($sql)
     or die('Problem with query' . $dbConn->error);
 
 // If the logged in user is not the owner of the review, or not the supervisor of the employee review,
 // redirect to logoff page
-foreach ($rs1 as $row) {
+foreach ($rs as $row) {
 
     if (($userLevel != $row["supervisor_id"]) && ($userLevel != $row["employee_id"])) {
 
