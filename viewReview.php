@@ -17,6 +17,8 @@ if (!isset($_SESSION["who"])) {
     header("location: logoff.php");
 }
 
+
+
 // retrieve session variables
 $userName = $_SESSION['who'];     //name of the employee
 $userLevel = $_SESSION['level'];  // Employee id
@@ -25,15 +27,18 @@ $userLevel = $_SESSION['level'];  // Employee id
 // get Server date
 $serverDate = date("d-m-Y");
 
+
+
 // Connect to the database to retrieve performance reviews
 require_once("conn.php");
 
 // retrieve the review_id from the clicked hyperlink
 $review = $dbConn->escape_string($_GET["review_id"]);
 
+
 // Build the SQL query
 // Employee information section - also retrive supervisor id to match with the logged in supervisor
-$sql1 = "SELECT review.employee_id, surname, firstname, review_year, supervisor_id, ";
+$sql1 = "SELECT review.employee_id, surname, firstname, review_year, supervisor_id, completed, ";
 
 // Ratings information section
 $sql1 .= "job_knowledge, work_quality, initiative, communication, dependability, ";
@@ -80,6 +85,8 @@ foreach ($rs1 as $row) {
     <script src="javascript/projectScript.js" defer></script>
     <title>Performance Review Details</title>
 </head>
+
+<!-- Since the Review Id came from the database on chooseReview.php, there will be no need to check for an empty record set -->
 
 <body>
 
@@ -168,28 +175,78 @@ foreach ($rs1 as $row) {
             </div>
         </div>
 
-        <div id="acknowledgement">
-            <h3>Acknowledgement</h3>
-            <form>
-                <p>Thank you for taking part in your Dunder Mifflin Performance Review. This review is an important
-                    aspect of the development of our organisation and its profits and of you as a valued employee.</p>
-                <p><strong>By electronically signing this form, you confirm that you have discussed this review in detail
-                        with your supervisor.</strong>
-                    <small>The fine print: Signing this form does not necessarily indicate that you agree with this evaluation.</small>
-                </p>
-            </form>
-        </div>
+        <?php foreach ($rs1 as $row) : ?>
+            <!-- If the review is 'current' and owned by the employee (ie. not the supervisor viewing it), show the below acknowledgement form -->
+            <?php if (($row["completed"] == "N") && ($row["employee_id"] == $userLevel)) : ?>
+                <div id="acknowledgement">
+                    <h3>Acknowledgement</h3>
+                    <form id="iAgreeForm" name="iAgreeForm" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?review_id=" . $review; ?>">
+                        <p>Thank you for taking part in your Dunder Mifflin Performance Review. This review is an important
+                            aspect of the development of our organisation and its profits and of you as a valued employee.</p>
+                        <p><strong>By electronically signing this form, you confirm that you have discussed this review in detail
+                                with your supervisor.</strong>
+                            <small>The fine print: Signing this form does not necessarily indicate that you agree with this evaluation.</small>
+                        </p>
+                        <div>
+                            <input type="checkbox" name="iAgree" id="iAgree">
+                            <label for="iAgree" id="agreeLabel" >I agree</label><input type="submit" name="submit" id="submit">
+                        </div>
+                    </form>
+                </div>
+
+            <?php endif; ?>
+        <?php endforeach; ?>
 
 
+        <!-- Postback submission of the form to update the database -->
+        <?php
+
+        if (isset($_POST["submit"])) {
 
 
+            // If the acceptance checkbox ticked, change the variable that is to be updated in the database
+            if (!empty($_POST["iAgree"])) { //Delete the ECHO statements
+
+                // update 'completed' and 'accepted' column in the database to "Y"
+                $updateAccepted = "Y";
+            } else {
+                $updateAccepted = "N";
+            }
+
+
+            //Build SQL query
+            //Update the review table to change the 'accepted' and 'completed' column values
+
+            $sqlUpdate = "UPDATE review ";
+            $sqlUpdate .= "SET accepted = '$updateAccepted' ";
+            $sqlUpdate .= "WHERE review_id = '$review' ";
+
+            //update database, display message box and disable form elements to show it has been completed.
+
+            if ($dbConn->query($sqlUpdate) === TRUE) {
+                echo "<p>Record updated successfully. You may exit this page.</p>";
+                echo 
+                "<script>
+                document.getElementById('submit').style.display = 'none';
+                document.getElementById('iAgree').style.display = 'none';
+                document.getElementById('agreeLabel').style.display = 'none'
+                </script>";
+            } else {
+                echo "<p>Error updating record: " . $conn->error . "</p>";
+            }
+        }
+
+        // Close the connection to the database  
+        $dbConn->close();
+
+    
+        ?>
 
 
 
     </div>
 
-    <!-- Close the connection to the database -->
-    <?php $dbConn->close(); ?>
+
 
 </body>
 

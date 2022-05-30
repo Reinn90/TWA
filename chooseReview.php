@@ -40,8 +40,8 @@ $rs1 = $dbConn->query($sql1)
 
 
 // Supervisor performance review database query
-// Retrieve Employee’s Surname, Employee’s Firstname, year of review, review id, employee id, completed status, and date completed
-$sql2 = "SELECT surname, firstname, review_year, review_id, employee.employee_id, completed, date_completed, supervisor_id ";
+// Retrieve Employee’s Surname, Employee’s Firstname, year of review, review id, employee id, completed status, date completed and accepted status
+$sql2 = "SELECT surname, firstname, review_year, review_id, employee.employee_id, completed, date_completed, supervisor_id, accepted ";
 $sql2 .= "FROM review INNER JOIN employee ";
 $sql2 .= "ON review.employee_id = employee.employee_id ";
 $sql2 .= "WHERE employee.supervisor_id = '$userLevel' ";
@@ -147,85 +147,96 @@ $rs2 = $dbConn->query($sql2)
         <!-- If the logged in user is a supervisor, show the below section -->
         <!-- Supervisor performance reviews access -->
         <?php if (($userLevel == "DM001") || ($userLevel == "DM002") || ($userLevel == "DMCEO")) : ?>
+            <!-- Check for an empty record set -->
+
             <div class="container-header">
                 <h3>Staff performance review</h3>
             </div>
 
             <div id="supervisor-table-container">
+                <?php if ($rs2->num_rows) : ?>
 
-                <!-- Display Outstanding reviews in a table -->
-                <h4>Outstanding</h4>
+                    <!-- Display Outstanding reviews in a table -->
+                    <h4>Outstanding</h4>
 
-                <table>
-                    <tr>
-                        <thead>
-                            <th>Surname</th>
-                            <th>First Name</th>
-                            <th>Employee ID</th>
-                            <th>Year of Review</th>
-                            <th>Employee Accepted?</th>
-                            <th>Date Completed</th>
-                        </thead>
-
-                    </tr>
-
-                    <?php foreach ($rs2 as $row) : ?>
-
-                        <!-- Show only employee reviews to their immediate supervisor -->
-                        <?php if ($row["supervisor_id"] == $userLevel) : ?>
-                            
-                            <?php if ($row["completed"] == "N") : ?>
-                                <tr>
-
-                                    <td><a href="viewReview.php?review_id=<?php echo $row["review_id"]; ?>"><?php echo $row["surname"]; ?></a></td>
-                                    <td><?php echo $row["firstname"]; ?></td>
-                                    <td><?php echo $row["employee_id"]; ?></td>
-                                    <td><?php echo $row["review_year"]; ?></td>
-                                    <td><?php echo $row["completed"]; ?></td>
-                                    <td><?php echo $row["date_completed"]; ?></td>
-
-                                </tr>
-                            <?php endif; ?>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
-                </table>
-
-                <!-- Display Completed reviews -->
-                <h4>Completed</h4>
-                <table>
-
-                    <tr>
-                        <thead>
-                            <th>Surname</th>
-                            <th>First Name</th>
-                            <th>Employee ID</th>
-                            <th>Year of Review</th>
-                            <th>Employee Accepted?</th>
-                            <th>Date Completed</th>
-                        </thead>
-
-                    </tr>
-                    <?php foreach ($rs2 as $row) : ?>
+                    <table>
                         <tr>
+                            <thead>
+                                <th>Surname</th>
+                                <th>First Name</th>
+                                <th>Employee ID</th>
+                                <th>Year of Review</th>
+                                <th>Review Complete?</th>
+                                <th>Date Completed</th>
+                                <th>Employee Accepted?</th>
+                            </thead>
+
+                        </tr>
+
+                        <?php foreach ($rs2 as $row) : ?>
+
+                            <!-- Show only employee reviews to their immediate supervisor -->
                             <?php if ($row["supervisor_id"] == $userLevel) : ?>
-                                <?php if ($row["completed"] == "Y") : ?>
 
-                                    <td><a href="viewReview.php?review_id=<?php echo $row["review_id"]; ?>"><?php echo $row["surname"]; ?></a></td>
-                                    <td><?php echo $row["firstname"]; ?></td>
-                                    <td><?php echo $row["employee_id"]; ?></td>
-                                    <td><?php echo $row["review_year"]; ?></td>
-                                    <td><?php echo $row["completed"]; ?></td>
-                                    <td><?php echo $row["date_completed"]; ?></td>
+                                <?php if ($row["completed"] == "N") : ?>
+                                    <tr>
 
+                                        <td><a href="viewReview.php?review_id=<?php echo $row["review_id"]; ?>"><?php echo $row["surname"]; ?></a></td>
+                                        <td><?php echo $row["firstname"]; ?></td>
+                                        <td><?php echo $row["employee_id"]; ?></td>
+                                        <td><?php echo $row["review_year"]; ?></td>
+                                        <td><?php echo $row["completed"]; ?></td>
+                                        <td><?php echo $row["date_completed"]; ?></td>
+                                        <td><?php echo $row["accepted"]; ?></td>
+                                        
+
+                                    </tr>
                                 <?php endif; ?>
                             <?php endif; ?>
-                        </tr>
-                    <?php endforeach; ?>
-                </table>
-            </div <?php endif; ?> </div>
+                        <?php endforeach; ?>
+                    </table>
 
-            <?php // Close the connection to the database
-            $dbConn->close(); ?>
+                    <!-- Display Completed reviews -->
+                    <h4>Completed</h4>
+                    <table>
+
+                        <tr>
+                            <thead>
+                                <th>Surname</th>
+                                <th>First Name</th>
+                                <th>Employee ID</th>
+                                <th>Year of Review</th>
+                                <th>Employee Accepted?</th>
+                                <th>Date Completed</th>
+                            </thead>
+
+                        </tr>
+                        <?php foreach ($rs2 as $row) : ?>
+                            <tr>
+                                <?php if ($row["supervisor_id"] == $userLevel) : ?>
+                                    <?php if ($row["completed"] == "Y") : ?>
+
+                                        <td><a href="viewReview.php?review_id=<?php echo $row["review_id"]; ?>"><?php echo $row["surname"]; ?></a></td>
+                                        <td><?php echo $row["firstname"]; ?></td>
+                                        <td><?php echo $row["employee_id"]; ?></td>
+                                        <td><?php echo $row["review_year"]; ?></td>
+                                        <td><?php echo $row["accepted"]; ?></td>
+                                        <td><?php echo $row["date_completed"]; ?></td>
+
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            </tr>
+                        <?php endforeach; ?>
+                    </table>
+                <?php else : echo "<p>You have no staff performance review history.</p>"; ?>
+                <?php endif; ?>
+
+            </div>
+        <?php endif; ?>
+    </div>
+
+    <?php // Close the connection to the database
+    $dbConn->close(); ?>
 
 </body>
 

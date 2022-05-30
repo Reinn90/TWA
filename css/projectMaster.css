@@ -16,6 +16,7 @@ body {
 
 }
 
+/* logoff, back, and surname hyperlinks */
 a {
     text-decoration: none;
     color: #2a3c5f;
@@ -31,6 +32,7 @@ a:hover {
     color: #EDEFE2;
 }
 
+/* Index.php page */
 .form-container {
     background-color: #EDEFE2;
     border-radius: 5px;
@@ -78,9 +80,8 @@ a:hover {
 #submit-button {
     color: white;
     background-color: #2a3c5f;
-    width: 100%;
+    width: 90%;
     padding: 5px;
-
     border-radius: 4px;
     font-size: 16px;
     cursor: pointer;
@@ -94,6 +95,7 @@ a:hover {
 .error {
     color: red;
 }
+
 
 .container {
     background-color: #EDEFE2;
@@ -126,6 +128,11 @@ a:hover {
 .navigation li {
     padding: 10px;
     margin: 10px;
+}
+
+/* Postback message box  */
+.container > p {
+    text-align: center;
 }
 
 .container-header {
@@ -262,4 +269,30 @@ h4 {
     margin: auto;
     width: 90%;
     text-align: center;
+}
+
+form div{
+    width:100%;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+#acknowledgement > input[type="checkbox"], input[type="submit"] {
+    
+    margin:15px 20px;
+    padding:5px;
+    width:100px;
+}
+
+input[type="submit"]{
+    border-radius: 4px;
+    font-weight:bold;
+    font-size:14px;
+}
+
+input[type="submit"]:hover {
+    background-color:#2a3c5f;
+    color:#EDEFE2;
 }
