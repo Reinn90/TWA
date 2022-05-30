@@ -159,42 +159,57 @@ $rs2 = $dbConn->query($sql2)
                     <!-- Display Outstanding reviews in a table -->
                     <h4>Outstanding</h4>
 
-                    <table>
-                        <tr>
-                            <thead>
-                                <th>Surname</th>
-                                <th>First Name</th>
-                                <th>Employee ID</th>
-                                <th>Year of Review</th>
-                                <th>Review Complete?</th>
-                                <th>Date Completed</th>
-                                <th>Employee Accepted?</th>
-                            </thead>
+                    <!-- Check whether there are incomplete reviews -->
+                    <?php
+                    $currentReviewCounter = 0; // initialise variable
 
-                        </tr>
+                    // loop though the database to see if ther are any incomplete reviews
+                    foreach ($rs2 as $row) {
+                        if ($row["completed"] == "N") $currentReviewCounter++;
+                    }
 
-                        <?php foreach ($rs2 as $row) : ?>
+                    //If there are no incomplete reviews, show a different message 
+                    if ($currentReviewCounter != 0) :  ?>
 
-                            <!-- Show only employee reviews to their immediate supervisor -->
-                            <?php if ($row["supervisor_id"] == $userLevel) : ?>
+                        <table>
+                            <tr>
+                                <thead>
+                                    <th>Surname</th>
+                                    <th>First Name</th>
+                                    <th>Employee ID</th>
+                                    <th>Year of Review</th>
+                                    <th>Review Complete?</th>
+                                    <th>Date Completed</th>
+                                    <th>Employee Accepted?</th>
+                                </thead>
 
-                                <?php if ($row["completed"] == "N") : ?>
-                                    <tr>
+                            </tr>
 
-                                        <td><a href="viewReview.php?review_id=<?php echo $row["review_id"]; ?>"><?php echo $row["surname"]; ?></a></td>
-                                        <td><?php echo $row["firstname"]; ?></td>
-                                        <td><?php echo $row["employee_id"]; ?></td>
-                                        <td><?php echo $row["review_year"]; ?></td>
-                                        <td><?php echo $row["completed"]; ?></td>
-                                        <td><?php echo $row["date_completed"]; ?></td>
-                                        <td><?php echo $row["accepted"]; ?></td>
-                                        
+                            <?php foreach ($rs2 as $row) : ?>
 
-                                    </tr>
-                                <?php endif; ?>
-                            <?php endif; ?>
-                        <?php endforeach; ?>
-                    </table>
+                                <!-- Show only employee reviews to their immediate supervisor -->
+                                <?php if ($row["supervisor_id"] == $userLevel) : ?>
+
+                                    <!-- Show outstanding, i.e. incomplete reviews -->
+                                    <?php if ($row["completed"] == "N") : ?>
+                                        <tr>
+
+                                            <td><a href="viewReview.php?review_id=<?php echo $row["review_id"]; ?>"><?php echo $row["surname"]; ?></a></td>
+                                            <td><?php echo $row["firstname"]; ?></td>
+                                            <td><?php echo $row["employee_id"]; ?></td>
+                                            <td><?php echo $row["review_year"]; ?></td>
+                                            <td><?php echo $row["completed"]; ?></td>
+                                            <td><?php echo $row["date_completed"]; ?></td>
+                                            <td><?php echo $row["accepted"]; ?></td>
+
+
+                                        </tr>
+                                    <?php endif; ?>
+                                <?php endif; // Supervisor check condition?> 
+                            <?php endforeach; ?>
+                        </table>
+                    <?php else : echo "<p>You have no outstanding staff review.</p>";
+                    endif; ?>
 
                     <!-- Display Completed reviews -->
                     <h4>Completed</h4>
