@@ -127,7 +127,7 @@ foreach ($rs as $row) {
                         <th>Review Year</th>
                     </tr>
                     <tr>
-                        <?php foreach ($rs1 as $row) : ?>
+                        <?php foreach ($rs as $row) : ?>
                             <td><?php echo $row["employee_id"]; ?></td>
                             <td><?php echo $row["firstname"]; ?></td>
                             <td><?php echo $row["surname"]; ?></td>
@@ -150,7 +150,7 @@ foreach ($rs as $row) {
                     </tr>
 
                     <tr>
-                        <?php foreach ($rs1 as $row) : ?>
+                        <?php foreach ($rs as $row) : ?>
                             <td><?php echo $row["job_knowledge"]; ?></td>
                             <td><?php echo $row["work_quality"]; ?></td>
                             <td><?php echo $row["initiative"]; ?></td>
@@ -175,7 +175,7 @@ foreach ($rs as $row) {
             </div>
         </div>
 
-        <?php foreach ($rs1 as $row) : ?>
+        <?php foreach ($rs as $row) : ?>
             <!-- If the review is 'current' and owned by the employee (ie. not the supervisor viewing it), show the below acknowledgement form -->
             <?php if (($row["completed"] == "N") && ($row["employee_id"] == $userLevel)) : ?>
                 <div id="acknowledgement">
