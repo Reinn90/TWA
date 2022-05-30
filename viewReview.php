@@ -115,64 +115,66 @@ foreach ($rs as $row) {
         </div>
 
         <div id="review-detail">
+            <?php
+            // If there are no review records- ie. manually editing  review_id on the web address
+            if ($rs->num_rows) :  ?>
 
+                <div id="employee-section">
+                    <h4>Employee Details</h4>
+                    <table>
+                        <tr>
+                            <th>Employee ID</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Review Year</th>
+                        </tr>
+                        <tr>
+                            <?php foreach ($rs as $row) : ?>
+                                <td><?php echo $row["employee_id"]; ?></td>
+                                <td><?php echo $row["firstname"]; ?></td>
+                                <td><?php echo $row["surname"]; ?></td>
+                                <td><?php echo $row["review_year"]; ?></td>
+                            <?php endforeach; ?>
+                        </tr>
+                    </table>
+                </div>
 
-            <div id="employee-section">
-                <h4>Employee Details</h4>
-                <table>
-                    <tr>
-                        <th>Employee ID</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Review Year</th>
-                    </tr>
-                    <tr>
-                        <?php foreach ($rs as $row) : ?>
-                            <td><?php echo $row["employee_id"]; ?></td>
-                            <td><?php echo $row["firstname"]; ?></td>
-                            <td><?php echo $row["surname"]; ?></td>
-                            <td><?php echo $row["review_year"]; ?></td>
-                        <?php endforeach; ?>
-                    </tr>
-                </table>
-            </div>
+                <div id="employee-rating">
+                    <h4>Evaluation</h4>
 
-            <div id="employee-rating">
-                <h4>Evaluation</h4>
+                    <table>
+                        <tr>
+                            <th>Job Knowledge</th>
+                            <th>Work Quality</th>
+                            <th>Initiative</th>
+                            <th>Communication</th>
+                            <th>Dependability</th>
+                        </tr>
 
-                <table>
-                    <tr>
-                        <th>Job Knowledge</th>
-                        <th>Work Quality</th>
-                        <th>Initiative</th>
-                        <th>Communication</th>
-                        <th>Dependability</th>
-                    </tr>
+                        <tr>
+                            <?php foreach ($rs as $row) : ?>
+                                <td><?php echo $row["job_knowledge"]; ?></td>
+                                <td><?php echo $row["work_quality"]; ?></td>
+                                <td><?php echo $row["initiative"]; ?></td>
+                                <td><?php echo $row["communication"]; ?></td>
+                                <td><?php echo $row["dependability"]; ?></td>
+                            <?php endforeach; ?>
 
-                    <tr>
-                        <?php foreach ($rs as $row) : ?>
-                            <td><?php echo $row["job_knowledge"]; ?></td>
-                            <td><?php echo $row["work_quality"]; ?></td>
-                            <td><?php echo $row["initiative"]; ?></td>
-                            <td><?php echo $row["communication"]; ?></td>
-                            <td><?php echo $row["dependability"]; ?></td>
-                        <?php endforeach; ?>
+                        </tr>
+                    </table>
+                </div>
 
-                    </tr>
-                </table>
-            </div>
-
-            <div id="additional-comments">
-                <h4>Comments</h4>
-                <table id="comments-box">
-                    <tr>
-                        <th>Review completed: <?php echo $row["date_completed"]; ?></th>
-                    </tr>
-                    <tr>
-                        <td>Additional Comments: <br><br> <?php echo $row["additional_comment"]; ?></td>
-                    </tr>
-                </table>
-            </div>
+                <div id="additional-comments">
+                    <h4>Comments</h4>
+                    <table id="comments-box">
+                        <tr>
+                            <th>Review completed: <?php echo $row["date_completed"]; ?></th>
+                        </tr>
+                        <tr>
+                            <td>Additional Comments: <br><br> <?php echo $row["additional_comment"]; ?></td>
+                        </tr>
+                    </table>
+                </div>
         </div>
 
         <?php foreach ($rs as $row) : ?>
@@ -189,7 +191,7 @@ foreach ($rs as $row) {
                         </p>
                         <div>
                             <input type="checkbox" name="iAgree" id="iAgree">
-                            <label for="iAgree" id="agreeLabel" >I agree</label><input type="submit" name="submit" id="submit">
+                            <label for="iAgree" id="agreeLabel">I agree</label><input type="submit" name="submit" id="submit">
                         </div>
                     </form>
                 </div>
@@ -199,48 +201,51 @@ foreach ($rs as $row) {
 
 
         <!-- Postback submission of the form to update the database -->
-        <?php
+    <?php
 
-        if (isset($_POST["submit"])) {
-
-
-            // If the acceptance checkbox ticked, change the variable that is to be updated in the database
-            if (!empty($_POST["iAgree"])) { //Delete the ECHO statements
-
-                // update 'completed' and 'accepted' column in the database to "Y"
-                $updateAccepted = "Y";
-            } else {
-                $updateAccepted = "N";
-            }
+                if (isset($_POST["submit"])) {
 
 
-            //Build SQL query
-            //Update the review table to change the 'accepted' and 'completed' column values
+                    // If the acceptance checkbox ticked, change the variable that is to be updated in the database
+                    if (!empty($_POST["iAgree"])) { //Delete the ECHO statements
 
-            $sqlUpdate = "UPDATE review ";
-            $sqlUpdate .= "SET accepted = '$updateAccepted' ";
-            $sqlUpdate .= "WHERE review_id = '$review' ";
+                        // update 'completed' and 'accepted' column in the database to "Y"
+                        $updateAccepted = "Y";
+                    } else {
+                        $updateAccepted = "N";
+                    }
 
-            //update database, display message box and disable form elements to show it has been completed.
 
-            if ($dbConn->query($sqlUpdate) === TRUE) {
-                echo "<p>Record updated successfully. You may exit this page.</p>";
-                echo 
-                "<script>
+                    //Build SQL query
+                    //Update the review table to change the 'accepted' and 'completed' column values
+
+                    $sqlUpdate = "UPDATE review ";
+                    $sqlUpdate .= "SET accepted = '$updateAccepted' ";
+                    $sqlUpdate .= "WHERE review_id = '$review' ";
+
+                    //update database, display message box and disable form elements to show it has been completed.
+
+                    if ($dbConn->query($sqlUpdate) === TRUE) {
+                        echo "<p>Record updated successfully. You may exit this page.</p>";
+                        echo
+                        "<script>
                 document.getElementById('submit').style.display = 'none';
                 document.getElementById('iAgree').style.display = 'none';
                 document.getElementById('agreeLabel').style.display = 'none'
                 </script>";
-            } else {
-                echo "<p>Error updating record: " . $conn->error . "</p>";
-            }
-        }
+                    } else {
+                        echo "<p>Error updating record: " . $conn->error . "</p>";
+                    }
+                }
 
-        // Close the connection to the database  
-        $dbConn->close();
+                // Close the connection to the database  
+                $dbConn->close();
 
-    
-        ?>
+
+            else :
+                echo "<h3>Review does not exist.</h3>";
+            endif; // empty record set check
+    ?>
 
 
 
