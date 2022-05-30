@@ -296,3 +296,7 @@ input[type="submit"]:hover {
     background-color:#2a3c5f;
     color:#EDEFE2;
 }
+
+#newReview {
+    margin:20px;
+}

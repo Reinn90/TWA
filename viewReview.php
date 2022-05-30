@@ -25,7 +25,7 @@ $userLevel = $_SESSION['level'];  // Employee id
 
 
 // get Server date
-$serverDate = date("d-m-Y");
+$serverDate = date("Y-m-d");
 
 
 

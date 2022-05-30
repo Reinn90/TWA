@@ -22,7 +22,7 @@ $userName = $_SESSION['who'];     // Name of the employee
 $userLevel = $_SESSION['level'];  // Employee id
 
 // get Server date
-$serverDate = date("d-m-Y");
+$serverDate = date("Y-m-d");
 
 // Connect to the database to retrieve performance reviews
 require_once("conn.php");
