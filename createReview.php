@@ -106,7 +106,7 @@ if (!$rs->num_rows) {
                 <input type="text" maxlength="4" size="4" name="reviewDateCreation" id="reviewDateCreation" placeholder="yyyy">
                 <span class="error" id="date-error-msg">error goes here - delete me</span>
                 
-                <input type="submit" name="submit" value="Save review">
+                <input type="submit" name="continue" value="Create Review">
             </form>
 
         </div>
