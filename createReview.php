@@ -30,7 +30,7 @@ $serverDate = date("Y-m-d");
 require_once("conn.php");
 
 // Supervisor performance review database query
-// Retrieve Employee’s Surname, Employee’s Firstname, year of review, review id, employee id, completed status, date completed and accepted status
+// Select employee details that belong to the logged-in supervisor
 $sql = "SELECT employee_id, surname, firstname, supervisor_id ";
 $sql .= "FROM employee ";
 $sql .= "WHERE supervisor_id = '$userLevel' ";
@@ -88,11 +88,13 @@ if (!$rs->num_rows) {
             </ul>
         </div>
 
-            <!-- Initial page form - selecting staff and date -->
+        <!-- Initial page form - selecting staff and date -->
         <div class="review-form-container">
-            <form id="newReviewId" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+            <form id="newReviewId" onsubmit="return validateForm(this);" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+
+                <!-- staff selection -->
                 <label for "stafflist">Choose staff: </label>
-                <select name="stafflist" id="stafflist" size="1" required>
+                <select name="stafflist" id="stafflist" size="1">
                     <option value="">Please select a staff.</option>
 
                     <!-- fill select box with supervisor's direct reports -->
@@ -100,14 +102,18 @@ if (!$rs->num_rows) {
                         <option value="<?php echo $row["employee_id"]; ?>"><?php echo $row["surname"] . ", " . $row["firstname"]; ?></option>
                     <?php endforeach; ?>
                 </select>
-                <span class="error" id="staff-error-msg">error goes here - delete me</span>
-                
+                <span class="error" id="staff-error-msg"></span>
+                    
+                <!-- date input -->
                 <label for="reviewDateCreation">Enter year of review: </label>
-                <input type="text" maxlength="4" size="4" name="reviewDateCreation" id="reviewDateCreation" placeholder="yyyy">
-                <span class="error" id="date-error-msg">error goes here - delete me</span>
-                
-                <input type="submit" name="continue" value="Create Review">
+                <input type="text" maxlength="4" size="4" name="reviewDateCreation" id="reviewDateCreation" placeholder="yyyy" onblur="validateNumber(this, getElementById('date-error-msg') );">
+                <span class="error" id="date-error-msg"></span>
+
+                <input type="submit" name="createReview" id="createReview" value="Create Review">
             </form>
+
+            <?php if(isset($_POST["createReview"])): ?>
+            <?php endif; ?>
 
         </div>
     </div>

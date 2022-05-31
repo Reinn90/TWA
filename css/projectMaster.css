@@ -297,7 +297,14 @@ input[type="submit"]:hover {
     color:#EDEFE2;
 }
 
-#newReview {
+#newReviewId {
     margin:20px;
 }
+
+#newReviewId label{
+    margin-right: 20px;
+}
+
+
+
 
