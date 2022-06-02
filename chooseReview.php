@@ -154,7 +154,7 @@ $rs2 = $dbConn->query($sql2)
             </div>
 
             <!-- Create a new review -->
-            <div id="newReview">
+            <div id="createNewReview">
                 <a href="createReview.php">Create a new review</a>
             </div>
 

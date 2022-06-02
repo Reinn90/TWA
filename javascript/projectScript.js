@@ -2,26 +2,24 @@
 
 // Initial form page validation 
 function validateForm(theForm) {
-    
-    var invalid = false;
 
-    // Check user has selected a staff
-    if (requiredFieldEmpty(theForm.stafflist)){
-        displayErrors(document.getElementById('staff-error-msg'));
-        invalid = true;
+    var staffErrorMsg = document.getElementById('staff-error-msg');
+    var dateErrorMsg = document.getElementById('date-error-msg');    
+
+    // Check if input fields are left empty, if so, throw DOM error notifications
+    if (requiredFieldEmpty(theForm.stafflist))  displayErrors(staffErrorMsg);
+    if (requiredFieldEmpty(theForm.reviewDateCreation)) displayErrors(dateErrorMsg);
+
+
+    // if there are no error message showing
+    if((staffErrorMsg.innerHTML == "") && (dateErrorMsg.innerHTML == "")){
+        return true;
     }
-
-    // Check user entered a date
-    if (requiredFieldEmpty(theForm.reviewDateCreation)){
-        displayErrors(document.getElementById('date-error-msg'));
-        invalid = true;
-    }
-
-    if(invalid) return false;
-    return true;
+    return false;
 }
 
 // Generic function to check if a required input is empty
+// From my Prac Set 1 
 function requiredFieldEmpty(element) {
 
     if (!element.value.length) {
@@ -34,6 +32,16 @@ function displayErrors(element) {
     element.innerHTML = "This field is required";
 }
 
+// Clear error message on select box when staff has been selected
+// From my prac set 1
+function clearErrorMsg(element, msg){
+    var input = element.value;
+
+    if(input.length != 0){
+        msg.innerHTML = "";
+    }
+}
+
 // check if the date input by user is correct
 function validateNumber(element, msg) {
     var input = element.value;
@@ -42,7 +50,7 @@ function validateNumber(element, msg) {
 
         if (isNaN(input))  msg.innerHTML = "Not a number. Please try again."; 
         else {
-            var regEx = /^[0-9]{4}$/g; //4 digit year regEx
+            var regEx = /^[0-9]{4}$/g; // regEx to match 2020-2039
 
             if (regEx.test(input)) {
 

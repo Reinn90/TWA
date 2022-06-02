@@ -53,6 +53,10 @@ if (!$rs->num_rows) {
     header("location: logoff.php");
 }
 
+
+// create value variables for staff selection box and date so 1st form postback retains information
+$staff = "";
+$date = "";
 ?>
 
 <!DOCTYPE html>
@@ -94,7 +98,7 @@ if (!$rs->num_rows) {
 
                 <!-- staff selection -->
                 <label for "stafflist">Choose staff: </label>
-                <select name="stafflist" id="stafflist" size="1">
+                <select name="stafflist" id="stafflist" size="1" onchange="clearErrorMsg(this, getElementById('staff-error-msg') );">
                     <option value="">Please select a staff.</option>
 
                     <!-- fill select box with supervisor's direct reports -->
@@ -103,7 +107,7 @@ if (!$rs->num_rows) {
                     <?php endforeach; ?>
                 </select>
                 <span class="error" id="staff-error-msg"></span>
-                    
+
                 <!-- date input -->
                 <label for="reviewDateCreation">Enter year of review: </label>
                 <input type="text" maxlength="4" size="4" name="reviewDateCreation" id="reviewDateCreation" placeholder="yyyy" onblur="validateNumber(this, getElementById('date-error-msg') );">
@@ -111,11 +115,150 @@ if (!$rs->num_rows) {
 
                 <input type="submit" name="createReview" id="createReview" value="Create Review">
             </form>
-
-            <?php if(isset($_POST["createReview"])): ?>
-            <?php endif; ?>
-
         </div>
+
+        <?php if (isset($_POST["createReview"])) :
+
+            // Open connection to the database
+            require_once("conn.php");
+
+            // sanitise user input
+            $employee = $dbConn->escape_string($_POST["stafflist"]); // Employee ID
+            $date = $dbConn->escape_string($_POST["reviewDateCreation"]); // year of review
+
+            // hide the first form
+            echo "<script>
+                document.getElementById('newReviewId').style.display = 'none'
+                </script>";
+
+            // Query the database to retrieve employee information
+            $sql = "SELECT employee_id, surname, firstname, job_title, department_name ";
+
+            // combine employee table with job table to retrieve job name info
+            $sql .= "FROM employee INNER JOIN job ON employee.job_id = job.job_id ";
+
+            // combine with department table to retrive department name info
+            $sql .= "INNER JOIN department ON employee.department_id = department.department_id ";
+
+            // information matching the selected employee from the form
+            $sql .= "WHERE employee_id = '$employee' ";
+
+
+            //Query the database
+            $rs = $dbConn->query($sql)
+                or die('Problem with query' . $dbConn->error);
+
+        ?>
+            <div class="review-form-container">
+                <form>
+                    <!-- Since employee selection comes from the database, there's no need to check for recordset -->
+
+                    <!-- Employee information -->
+
+                    <h4>Employee Details</h4>
+                    <table>
+                        <tr>
+                            <th>Employee ID</th>
+                            <th>Last Name</th>
+                            <th>First Name</th>
+                            <th>Job Title</th>
+                            <th>Department</th>
+                            <th>Review Year</th>
+                        </tr>
+                        <tr>
+                            <?php foreach ($rs as $row) : ?>
+                                <td><?php echo $row["employee_id"]; ?></td>
+                                <td><?php echo $row["surname"]; ?></td>
+                                <td><?php echo $row["firstname"]; ?></td>
+                                <td><?php echo $row["job_title"]; ?></td>
+                                <td><?php echo $row["department_name"]; ?></td>
+                                <td><?php echo $date; ?></td>
+                            <?php endforeach; ?>
+                        </tr>
+                    </table>
+
+                    <!-- Editable ratings form -->
+                    <h4>Ratings Information</h4>
+                    <table>
+                        <!-- Job Knowledge, Work
+Quality, Initiative, Communication, Dependability. -->
+                        <tr>
+                            <th>Job Knowledge</th>
+                            <th>Work Quality</th>
+                            <th>Initiative</th>
+                            <th>Communication</th>
+                            <th>Dependability</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <select name="jobKnow" id="jobKNow" size="1">
+                                    <option value="">Please select from 1-5</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select name="workQ" id="workQ" size="1">
+                                    <option value="">Please select from 1-5</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select name="init" id="init" size="1">
+                                    <option value="">Please select from 1-5</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select name="comms" id="comms" size="1">
+                                    <option value="">Please select from 1-5</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select name="depend" id="depend" size="1">
+                                    <option value="">Please select from 1-5</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </td>
+
+                        </tr>
+                    </table>
+                    <div id="comments-box">
+                        <label for="addComments">Additional comments:</label>
+                        <textarea name="addComments" id="addComments" placeholder="Optional"></textarea>
+                    </div>
+
+
+                    <input type="submit" name="saveReview" id="saveReview" value="saveReview">
+                </form>
+
+
+
+            </div>
+
+        <?php $dbConn->close(); //close the database
+        endif; ?>
+
     </div>
 
 </body>
