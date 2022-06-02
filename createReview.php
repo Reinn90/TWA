@@ -150,7 +150,7 @@ $date = "";
 
         ?>
             <div class="review-form-container">
-                <form>
+                <form id="newReviewId2" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" onsubmit="return validateRatingsForm(this);">
                     <!-- Since employee selection comes from the database, there's no need to check for recordset -->
 
                     <!-- Employee information -->
@@ -183,62 +183,32 @@ $date = "";
                         <!-- Job Knowledge, Work
 Quality, Initiative, Communication, Dependability. -->
                         <tr>
-                            <th>Job Knowledge</th>
-                            <th>Work Quality</th>
-                            <th>Initiative</th>
-                            <th>Communication</th>
-                            <th>Dependability</th>
+                            <th><label for="jobKnow">Job Knowledge</label></th>
+                            <th><label for="workQ">Work Quality</label></th>
+                            <th><label for="init">Initiative</label></th>
+                            <th><label for="comms">Communication</label></th>
+                            <th><label for="depend">Dependability</label></th>
                         </tr>
                         <tr>
                             <td>
-                                <select name="jobKnow" id="jobKNow" size="1">
-                                    <option value="">Rate from 1 to 5</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
+                                <input type="text" maxlength="1" name="jobKnow" id="jobKnow" placeholder="Rate between 1-5" onblur="validateRatings(this, getElementById('job-error-msg') );" >
+                                <small class="error" id="job-error-msg"></small>
                             </td>
                             <td>
-                                <select name="workQ" id="workQ" size="1">
-                                    <option value="">Rate from 1 to 5</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
+                                <input type="text" maxlength="1" name="workQ" id="workQ" placeholder="Rate between 1-5" onblur="validateRatings(this, getElementById('workQ-error-msg') );" >
+                                <small class="error" id="workQ-error-msg"></small>
                             </td>
                             <td>
-                                <select name="init" id="init" size="1">
-                                    <option value="">Rate from 1 to 5</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
+                                <input type="text" maxlength="1" name="init" id="init" placeholder="Rate between 1-5" onblur="validateRatings(this, getElementById('init-error-msg') );" >
+                                <small class="error" id="init-error-msg"></small>
                             </td>
                             <td>
-                                <select name="comms" id="comms" size="1">
-                                    <option value="">Rate from 1 to 5</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
+                                <input type="text" maxlength="1" name="comms" id="comms" placeholder="Rate between 1-5" onblur="validateRatings(this, getElementById('comms-error-msg') );" >
+                                <small class="error" id="comms-error-msg"></small>
                             </td>
                             <td>
-                                <select name="depend" id="depend" size="1">
-                                    <option value="">Rate from 1 to 5</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
+                                <input type="text" maxlength="1" name="depend" id="depend" placeholder="Rate between 1-5" onblur="validateRatings(this, getElementById('depend-error-msg') );" >
+                                <small class="error" id="depend-error-msg"></small>
                             </td>
 
                         </tr>
@@ -249,8 +219,8 @@ Quality, Initiative, Communication, Dependability. -->
                     </div>
 
                     <div class="review-form-container">
-                        <input type="checkbox" name="reviewComplete" id="reviewComplete"> 
-                        <label for="reviewComplete"> Review Complete? </label>        
+                        <input type="checkbox" name="reviewComplete" id="reviewComplete">
+                        <label for="reviewComplete"> Review Complete? </label>
                         <input type="submit" name="saveReview" id="saveReview" value="Save Review">
                     </div>
                 </form>

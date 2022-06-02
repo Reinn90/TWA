@@ -4,19 +4,51 @@
 function validateForm(theForm) {
 
     var staffErrorMsg = document.getElementById('staff-error-msg');
-    var dateErrorMsg = document.getElementById('date-error-msg');    
+    var dateErrorMsg = document.getElementById('date-error-msg');
 
     // Check if input fields are left empty, if so, throw DOM error notifications
-    if (requiredFieldEmpty(theForm.stafflist))  displayErrors(staffErrorMsg);
+    if (requiredFieldEmpty(theForm.stafflist)) displayErrors(staffErrorMsg);
     if (requiredFieldEmpty(theForm.reviewDateCreation)) displayErrors(dateErrorMsg);
 
 
     // if there are no error message showing
-    if((staffErrorMsg.innerHTML == "") && (dateErrorMsg.innerHTML == "")){
+    if ((staffErrorMsg.innerHTML == "") && (dateErrorMsg.innerHTML == "")) {
         return true;
     }
     return false;
 }
+
+// Secondary 'ratings' form validation
+
+function validateRatingsForm(theForm) {
+
+    // If there are error messages due to incorrect input, do not let form submit
+    if (!(document.getElementById('job-error-msg').innerHTML == "")) return false;
+    if (!(document.getElementById('workQ-error-msg').innerHTML == "")) return false;
+    if (!(document.getElementById('init-error-msg').innerHTML == "")) return false;
+    if (!(document.getElementById('comms-error-msg').innerHTML == "")) return false;
+    if (!(document.getElementById('depend-error-msg').innerHTML == "")) return false;
+
+    // otherwise, inputs are not required
+    return true;
+}
+
+// validate the ratings system on top of the maxlength setting
+function validateRatings(element, msg) {
+
+    var input = element.value;
+
+    if (isNaN(input)) msg.innerHTML = "Numbers only please";
+    else {
+        var regEx = /^[1-5]$/g; // 1 digit between 1-5
+
+        if (!regEx.test(input)) msg.innerHTML = "Pick a number between 1-5.";
+        else msg.innerHTML = "";
+    }
+
+}
+
+
 
 // Generic function to check if a required input is empty
 // From my Prac Set 1 
@@ -34,10 +66,10 @@ function displayErrors(element) {
 
 // Clear error message on select box when staff has been selected
 // From my prac set 1
-function clearErrorMsg(element, msg){
+function clearErrorMsg(element, msg) {
     var input = element.value;
 
-    if(input.length != 0){
+    if (input.length != 0) {
         msg.innerHTML = "";
     }
 }
@@ -48,7 +80,7 @@ function validateNumber(element, msg) {
 
     if (input.length != 0) {
 
-        if (isNaN(input))  msg.innerHTML = "Not a number. Please try again."; 
+        if (isNaN(input)) msg.innerHTML = "Not a number. Please try again.";
         else {
             var regEx = /^[0-9]{4}$/g; // regEx to match 2020-2039
 
