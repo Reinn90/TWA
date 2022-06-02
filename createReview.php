@@ -191,23 +191,23 @@ Quality, Initiative, Communication, Dependability. -->
                         </tr>
                         <tr>
                             <td>
-                                <input type="text" maxlength="1" name="jobKnow" id="jobKnow" placeholder="Rate between 1-5" onblur="validateRatings(this, getElementById('job-error-msg') );" >
+                                <input type="text" maxlength="1" name="jobKnow" id="jobKnow" placeholder="Rate between 1-5" onblur="validateRatings(this, getElementById('job-error-msg') );">
                                 <small class="error" id="job-error-msg"></small>
                             </td>
                             <td>
-                                <input type="text" maxlength="1" name="workQ" id="workQ" placeholder="Rate between 1-5" onblur="validateRatings(this, getElementById('workQ-error-msg') );" >
+                                <input type="text" maxlength="1" name="workQ" id="workQ" placeholder="Rate between 1-5" onblur="validateRatings(this, getElementById('workQ-error-msg') );">
                                 <small class="error" id="workQ-error-msg"></small>
                             </td>
                             <td>
-                                <input type="text" maxlength="1" name="init" id="init" placeholder="Rate between 1-5" onblur="validateRatings(this, getElementById('init-error-msg') );" >
+                                <input type="text" maxlength="1" name="init" id="init" placeholder="Rate between 1-5" onblur="validateRatings(this, getElementById('init-error-msg') );">
                                 <small class="error" id="init-error-msg"></small>
                             </td>
                             <td>
-                                <input type="text" maxlength="1" name="comms" id="comms" placeholder="Rate between 1-5" onblur="validateRatings(this, getElementById('comms-error-msg') );" >
+                                <input type="text" maxlength="1" name="comms" id="comms" placeholder="Rate between 1-5" onblur="validateRatings(this, getElementById('comms-error-msg') );">
                                 <small class="error" id="comms-error-msg"></small>
                             </td>
                             <td>
-                                <input type="text" maxlength="1" name="depend" id="depend" placeholder="Rate between 1-5" onblur="validateRatings(this, getElementById('depend-error-msg') );" >
+                                <input type="text" maxlength="1" name="depend" id="depend" placeholder="Rate between 1-5" onblur="validateRatings(this, getElementById('depend-error-msg') );">
                                 <small class="error" id="depend-error-msg"></small>
                             </td>
 
@@ -225,12 +225,26 @@ Quality, Initiative, Communication, Dependability. -->
                     </div>
                 </form>
 
+                <?php if ( isset($_POST["saveReview"]) ):
+
+                    //retrieve user input from 2nd form
+                    $job = $dbConn->escape_string($_POST['jobKnow']);
+                    $workQ = $dbConn->escape_string($_POST['workQ']);
+                    $init = $dbConn->escape_string($_POST['init']);
+                    $comms = $dbConn->escape_string($_POST['comms']);
+                    $depend = $dbConn->escape_string($_POST['depend']);
+
+                   
+                ?>
+
+                <p><?php echo $job; ?></p>
+                <?php endif; ?>
 
 
             </div>
 
         <?php $dbConn->close(); //close the database
-        endif; ?>
+    endif; ?>
 
     </div>
 
