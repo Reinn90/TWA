@@ -192,7 +192,7 @@ Quality, Initiative, Communication, Dependability. -->
                         <tr>
                             <td>
                                 <select name="jobKnow" id="jobKNow" size="1">
-                                    <option value="">Please select from 1-5</option>
+                                    <option value="">Rate from 1 to 5</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
@@ -202,7 +202,7 @@ Quality, Initiative, Communication, Dependability. -->
                             </td>
                             <td>
                                 <select name="workQ" id="workQ" size="1">
-                                    <option value="">Please select from 1-5</option>
+                                    <option value="">Rate from 1 to 5</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
@@ -212,7 +212,7 @@ Quality, Initiative, Communication, Dependability. -->
                             </td>
                             <td>
                                 <select name="init" id="init" size="1">
-                                    <option value="">Please select from 1-5</option>
+                                    <option value="">Rate from 1 to 5</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
@@ -222,7 +222,7 @@ Quality, Initiative, Communication, Dependability. -->
                             </td>
                             <td>
                                 <select name="comms" id="comms" size="1">
-                                    <option value="">Please select from 1-5</option>
+                                    <option value="">Rate from 1 to 5</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
@@ -232,7 +232,7 @@ Quality, Initiative, Communication, Dependability. -->
                             </td>
                             <td>
                                 <select name="depend" id="depend" size="1">
-                                    <option value="">Please select from 1-5</option>
+                                    <option value="">Rate from 1 to 5</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
@@ -248,8 +248,11 @@ Quality, Initiative, Communication, Dependability. -->
                         <textarea name="addComments" id="addComments" placeholder="Optional"></textarea>
                     </div>
 
-
-                    <input type="submit" name="saveReview" id="saveReview" value="saveReview">
+                    <div class="review-form-container">
+                        <input type="checkbox" name="reviewComplete" id="reviewComplete"> 
+                        <label for="reviewComplete"> Review Complete? </label>        
+                        <input type="submit" name="saveReview" id="saveReview" value="Save Review">
+                    </div>
                 </form>
 
 
