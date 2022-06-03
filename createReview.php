@@ -4,6 +4,10 @@
 // ensure the page is not cached - sourced from TWA lecture slides by Paul Davies
 require_once("nocache.php");
 
+if (isset($_POST["saveReview"])){
+    echo "<script>document.getElementById('formTwo').style.display = 'block'</script>" ;
+}
+
 // get access to the session variables
 session_start();
 
@@ -117,7 +121,7 @@ $date = "";
             </form>
         </div>
 
-        <?php if (isset($_POST["createReview"])) :
+        <?php if (isset($_POST["createReview"]) ) :
 
             // DOM error notification for 2nd form
             $formError = "";

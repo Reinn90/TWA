@@ -219,6 +219,7 @@ foreach ($rs as $row) {
 
                     } else {
                         $updateAccepted = "N";
+                        $date = $_SESSION['serverdate'];
                     }
 
 
