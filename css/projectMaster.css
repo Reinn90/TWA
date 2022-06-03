@@ -32,7 +32,8 @@ a:hover {
     color: #EDEFE2;
 }
 
-/* Index.php page */
+
+/* Index.php */
 .form-container {
     background-color: #EDEFE2;
     border-radius: 5px;
@@ -42,7 +43,7 @@ a:hover {
     overflow: hidden;
 }
 
-
+/* Dunder Mifflin title card */
 .form-container h2 {
     font-family: "Impact", "Helvetica", sans-serif;
     background-color: #2a3c5f;
@@ -54,16 +55,19 @@ a:hover {
     margin: 0px
 }
 
+/* index form */
 .form {
     padding: 20px 30px;
 }
 
+/* form elements */
 .form-control {
 
     padding-bottom: 20px;
     position: relative;
 }
 
+/* form labels  */
 .form-control label {
     display: inline-block;
     margin-bottom: 5px;
@@ -96,7 +100,7 @@ a:hover {
     color: red;
 }
 
-
+/* choose review page */
 .container {
     background-color: #EDEFE2;
     border-radius: 5px;
@@ -105,6 +109,7 @@ a:hover {
     overflow: hidden;
 }
 
+/* section headers */
 .container h2 {
     font-family: "Impact", "Helvetica", sans-serif;
     background-color: #2a3c5f;
@@ -116,6 +121,7 @@ a:hover {
     margin: 0px
 }
 
+/* list display style */
 .navigation ul {
     list-style-type: none;
     display: flex;
@@ -154,6 +160,7 @@ a:hover {
     font-size: 16px;
 }
 
+/* Review display styling */
 #staff-table-container,
 #supervisor-table-container {
     border-top: 2px solid #676060;
@@ -165,7 +172,6 @@ a:hover {
 
 }
 
-
 #staff-table-container table {
     margin: 10px;
     border-spacing: 10px 5px;
@@ -176,12 +182,12 @@ a:hover {
     width: 100%;
 }
 
-
+/* alternate row color */
 tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
-
+/* supervisor's employee list */
 .employee-header,
 h4 {
     width: 400px;
@@ -191,7 +197,6 @@ h4 {
     color: white;
     text-align: center;
 }
-
 
 td {
     padding: 10px;
@@ -205,6 +210,7 @@ h4 {
     margin: 10px 0;
 }
 
+/* View Review page */
 #review-detail {
     display: grid;
 
@@ -218,6 +224,7 @@ h4 {
     justify-content: center;
 }
 
+/* Employee info section */
 #employee-section {
     grid-area: emp;
     height: auto;
@@ -225,6 +232,7 @@ h4 {
 
 }
 
+/* Employee rating section */
 #employee-rating {
     grid-area: eval;
     height: auto;
@@ -244,7 +252,7 @@ h4 {
     text-align: center;
 }
 
-
+/* Addtional comments */
 #additional-comments {
     grid-area: comments;
     height: auto;
@@ -258,6 +266,7 @@ h4 {
     width: 100%;
 }
 
+/* Acknoledgement and submit section */
 #acknowledgement {
     display: block;
     width: 90%;
@@ -271,6 +280,7 @@ h4 {
     text-align: center;
 }
 
+/* checkbox and submit button alignment within the form */
 form div{
     width:100%;
     display:flex;
@@ -279,8 +289,8 @@ form div{
 
 }
 
-#acknowledgement > input[type="checkbox"], input[type="submit"] {
-    
+/* input styling for checkbox and submit */
+#acknowledgement > input[type="checkbox"], input[type="submit"] { 
     margin:15px 20px;
     padding:5px;
     width:auto;
@@ -297,6 +307,7 @@ input[type="submit"]:hover {
     color:#EDEFE2;
 }
 
+/* Create Review page */
 
 #createNewReview,
 #newReviewId {
@@ -307,7 +318,7 @@ input[type="submit"]:hover {
     margin-right: 20px;
 }
 
-
+/* 1st and 2nd form style */
 .review-form-container{
     width:auto;
     margin:10px;
@@ -323,11 +334,11 @@ input[type="submit"]:hover {
     justify-content: center;
 }
 
+/* textarea styling */
 #comments-box{
     display:block;
     margin:10px;
 }
-
 #comments-box textarea{
     width:98%;
     height: 100px;
@@ -337,6 +348,4 @@ input[type="submit"]:hover {
     
 }
 
-select{
-    width:auto;
-}
+

@@ -259,14 +259,15 @@ $date = "";
             // additional comments - validated and sanitised using escape_string function
             $addComment = $dbConn->escape_string($_POST['addComments']);
 
-            // Review complete checkbox
-            if (!empty($_POST["reviewComplete"]))
+            // Review complete checkbox, if the review is complete, record completion date
+            if (!empty($_POST["reviewComplete"])){
                 $reviewComplete = "Y";
-            else $reviewComplete = "N";
+                $date = $_SESSION['date'];
+            }else $reviewComplete = "N";
 
             // Retrieve session variables for the sql statement
             $employee = $_SESSION['employee'];
-            $date = $_SESSION['date'];
+            
 
             // build SQL statement to insert to database
 
@@ -287,11 +288,6 @@ $date = "";
 
         
         endif; ?>
-
-
-
-
-
 
 
     </div>
