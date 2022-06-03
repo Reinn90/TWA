@@ -14,5 +14,5 @@
 
 
    // Redirect the user to the starting page (login.php)
-   header("location: index1.php");
+   header("location: index.php");
 ?>
