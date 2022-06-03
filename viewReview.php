@@ -27,6 +27,10 @@ $userLevel = $_SESSION['level'];  // Employee id
 // get Server date
 $serverDate = date("Y-m-d");
 
+// set as session variable
+
+$_SESSION['serverdate'] = $serverDate;
+
 
 
 // Connect to the database to retrieve performance reviews
@@ -179,7 +183,7 @@ foreach ($rs as $row) {
 
         <?php foreach ($rs as $row) : ?>
             <!-- If the review is 'current' and owned by the employee (ie. not the supervisor viewing it), show the below acknowledgement form -->
-            <?php if (($row["completed"] == "N") && ($row["employee_id"] == $userLevel)) : ?>
+            <?php if (($row["accepted"] == "N") && ($row["employee_id"] == $userLevel) ) : ?>
                 <div id="acknowledgement">
                     <h3>Acknowledgement</h3>
                     <form id="iAgreeForm" name="iAgreeForm" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . "?review_id=" . $review; ?>">
@@ -207,10 +211,12 @@ foreach ($rs as $row) {
 
 
                     // If the acceptance checkbox ticked, change the variable that is to be updated in the database
-                    if (!empty($_POST["iAgree"])) { //Delete the ECHO statements
+                    if (!empty($_POST["iAgree"])) { 
 
                         // update 'completed' and 'accepted' column in the database to "Y"
                         $updateAccepted = "Y";
+                        $date = $_SESSION['serverdate'];
+
                     } else {
                         $updateAccepted = "N";
                     }
@@ -220,21 +226,23 @@ foreach ($rs as $row) {
                     //Update the review table to change the 'accepted' and 'completed' column values
 
                     $sqlUpdate = "UPDATE review ";
-                    $sqlUpdate .= "SET accepted = '$updateAccepted' ";
+                    $sqlUpdate .= "SET accepted = '$updateAccepted', date_accepted = '$date' ";
                     $sqlUpdate .= "WHERE review_id = '$review' ";
 
-                    //update database, display message box and disable form elements to show it has been completed.
-
+                    // Update database, display message box and disable form elements to show it has been completed.
+                    // sourced from https://www.w3schools.com/php/php_mysql_update.asp
                     if ($dbConn->query($sqlUpdate) === TRUE) {
                         echo "<p>Record updated successfully. You may exit this page.</p>";
+
+                        // code inspired by my Prac set 1
                         echo
                         "<script>
-                document.getElementById('submit').style.display = 'none';
-                document.getElementById('iAgree').style.display = 'none';
-                document.getElementById('agreeLabel').style.display = 'none'
-                </script>";
+                            document.getElementById('submit').style.display = 'none';
+                            document.getElementById('iAgree').style.display = 'none';
+                            document.getElementById('agreeLabel').style.display = 'none'
+                        </script>";
                     } else {
-                        echo "<p>Error updating record: " . $conn->error . "</p>";
+                        echo "<p>Error updating record: " . $dbConn->error . "</p>";
                     }
                 }
 

@@ -29,7 +29,7 @@ require_once("conn.php");
 
 // Employee performance review database query
 // Retrieve review_year, date_completed and display in reverse order
-$sql1 = "SELECT review_id, review_year, date_completed, completed ";
+$sql1 = "SELECT review_id, review_year, date_completed, completed, accepted ";
 $sql1 .= "FROM review ";
 $sql1 .= "WHERE employee_id = '$userLevel' ";
 $sql1 .= "ORDER BY review_year DESC ";
@@ -104,7 +104,7 @@ $rs2 = $dbConn->query($sql2)
                     <?php foreach ($rs1 as $row) : ?>
                         <tr>
                             <!-- Condition to determine whether a review is Current or Completed -->
-                            <?php if ($row["completed"] == "N") : ?>
+                            <?php if (( $row["completed"] == "N") || ($row["accepted"] == "N") ) : ?>
 
                                 <td>
                                     <?php echo "Year Review: " . $row["review_year"] . "<br><br>"; ?>

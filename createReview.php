@@ -119,12 +119,19 @@ $date = "";
 
         <?php if (isset($_POST["createReview"])) :
 
+            // DOM error notification for 2nd form
+            $formError = "";
+
             // Open connection to the database
             require_once("conn.php");
 
             // sanitise user input
             $employee = $dbConn->escape_string($_POST["stafflist"]); // Employee ID
             $date = $dbConn->escape_string($_POST["reviewDateCreation"]); // year of review
+
+            //record employee and date as session variables to be used in 2nd form
+            $_SESSION['employee'] = $employee;
+            $_SESSION['date'] = $date;
 
             // hide the first form
             echo "<script>
@@ -149,7 +156,7 @@ $date = "";
                 or die('Problem with query' . $dbConn->error);
 
         ?>
-            <div class="review-form-container">
+            <div class="review-form-container" id="formTwo">
                 <form id="newReviewId2" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" onsubmit="return validateRatingsForm(this);">
                     <!-- Since employee selection comes from the database, there's no need to check for recordset -->
 
@@ -177,11 +184,12 @@ $date = "";
                         </tr>
                     </table>
 
+                    <?php $dbConn->close(); // close the database now that we've populated the employee section
+                    ?>
                     <!-- Editable ratings form -->
                     <h4>Ratings Information</h4>
                     <table>
-                        <!-- Job Knowledge, Work
-Quality, Initiative, Communication, Dependability. -->
+
                         <tr>
                             <th><label for="jobKnow">Job Knowledge</label></th>
                             <th><label for="workQ">Work Quality</label></th>
@@ -222,29 +230,69 @@ Quality, Initiative, Communication, Dependability. -->
                         <input type="checkbox" name="reviewComplete" id="reviewComplete">
                         <label for="reviewComplete"> Review Complete? </label>
                         <input type="submit" name="saveReview" id="saveReview" value="Save Review">
+                        <?php echo "<strong class='error'>$formError</strong>"; ?>
                     </div>
                 </form>
-
-                <?php if ( isset($_POST["saveReview"]) ):
-
-                    //retrieve user input from 2nd form
-                    $job = $dbConn->escape_string($_POST['jobKnow']);
-                    $workQ = $dbConn->escape_string($_POST['workQ']);
-                    $init = $dbConn->escape_string($_POST['init']);
-                    $comms = $dbConn->escape_string($_POST['comms']);
-                    $depend = $dbConn->escape_string($_POST['depend']);
-
-                   
-                ?>
-
-                <p><?php echo $job; ?></p>
-                <?php endif; ?>
-
-
             </div>
+        <?php endif; // if 1st form has been submitted
+        ?>
 
-        <?php $dbConn->close(); //close the database
-    endif; ?>
+        <!-- Postback submission of 2nd form - INSERTING DATA into the database -->
+        <?php
+
+        if (isset($_POST["saveReview"])) :
+
+            // Variable that lets the form insert the data in the database
+            $reviewValid = false;
+
+            // Re-open the database
+            require_once("conn.php");
+
+            //retrieve user input from 2nd form
+            $job = $dbConn->escape_string($_POST['jobKnow']);
+            $workQ = $dbConn->escape_string($_POST['workQ']);
+            $init = $dbConn->escape_string($_POST['init']);
+            $comms = $dbConn->escape_string($_POST['comms']);
+            $depend = $dbConn->escape_string($_POST['depend']);
+
+
+            // additional comments - validated and sanitised using escape_string function
+            $addComment = $dbConn->escape_string($_POST['addComments']);
+
+            // Review complete checkbox
+            if (!empty($_POST["reviewComplete"]))
+                $reviewComplete = "Y";
+            else $reviewComplete = "N";
+
+            // Retrieve session variables for the sql statement
+            $employee = $_SESSION['employee'];
+            $date = $_SESSION['date'];
+
+            // build SQL statement to insert to database
+
+            $sqlInsert = "INSERT INTO review ";
+            $sqlInsert .= "(employee_id, completed, review_year, job_knowledge, work_quality, initiative, communication, dependability, additional_comment, date_completed) ";
+            $sqlInsert .= "VALUES ('$employee', '$reviewComplete', '$date', '$job', '$workQ', '$init', '$comms', '$depend', '$addComment', '$serverDate') ";
+
+
+            // sourced form https://www.w3schools.com/php/php_mysql_insert.asp
+            if ($dbConn->query($sqlInsert) === TRUE) {
+                echo "New record created successfully";
+            } else {
+                echo "Error: " . $sqlInsert . "<br>" . $dbConn->error;
+            }
+
+            // close the database
+            $dbConn->close();
+
+        
+        endif; ?>
+
+
+
+
+
+
 
     </div>
 
